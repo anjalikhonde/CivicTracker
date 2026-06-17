@@ -75,15 +75,12 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
 
-    // Location
+    // Google Maps & Location
+    implementation(libs.maps.compose)
     implementation(libs.play.services.location)
 
     // Coil
     implementation(libs.coil.compose)
-
-    // OSMDroid & Preferences
-    implementation(libs.osmdroid.android)
-    implementation(libs.androidx.preference.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
