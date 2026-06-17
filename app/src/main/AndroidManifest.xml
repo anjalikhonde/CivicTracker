@@ -3,10 +3,21 @@
     package="com.civictracker.app"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Network and Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Features -->
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Required for OSMDroid tile caching on older Android versions -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <queries>
         <intent>
@@ -25,9 +36,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CivicTracker">
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY_HERE" />
+        <!-- Note: Google Maps API key removed as the app now uses OSMDroid -->
 
         <activity
             android:name=".MainActivity"

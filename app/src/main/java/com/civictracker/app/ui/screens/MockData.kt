@@ -1,62 +1,96 @@
 package com.civictracker.app.ui.screens
 
-import com.civictracker.app.data.model.Issue
-import java.util.UUID
+data class AuditEntry(
+    val date: String,
+    val title: String,
+    val description: String,
+    val isCompleted: Boolean = true
+)
+
+data class EnhancedIssue(
+    val id: String,
+    val title: String,
+    val description: String,
+    val category: String,
+    val latitude: Double,
+    val longitude: Double,
+    val imageUrl: String,
+    val status: String,
+    val urgency: Int,
+    val phase: Int,
+    val ward: String,
+    val timeAgo: String,
+    val upvotes: Int,
+    val sla: String? = null,
+    val department: String? = null,
+    val timeline: List<AuditEntry> = emptyList()
+)
+
+data class DepartmentStat(
+    val name: String,
+    val resolved: Int,
+    val avgDays: Int,
+    val overdue: Int
+)
 
 object MockData {
     val sampleIssues = listOf(
-        Issue(
+        EnhancedIssue(
             id = "1",
-            userId = "user1",
-            title = "Broken Street Light",
-            description = "The street light has been flickering and now it is completely off. It's very dark at night.",
-            category = "Lighting",
-            latitude = 12.9716,
-            longitude = 77.5946,
+            title = "Damaged Streetlight - Oak St.",
+            description = "Exposed wiring and no illumination for 3 consecutive nights. Potential safety hazard for...",
+            category = "ROAD",
+            latitude = 19.0760,
+            longitude = 72.8777,
             imageUrl = "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000",
-            status = "Open",
-            upvotes = 12,
-            timestamp = System.currentTimeMillis() - 86400000
+            status = "ASSIGNED",
+            urgency = 88,
+            phase = 3,
+            ward = "Ward 4",
+            timeAgo = "2h ago",
+            upvotes = 124,
+            sla = "04:22:16",
+            department = "Electricity Dept",
+            timeline = listOf(
+                AuditEntry("MAR 11, 09:12 AM", "Government Routes to Electricity", "Internal dispatch protocol initiated. High priority flag attached."),
+                AuditEntry("MAR 11, 04:30 PM", "Community Consensus Reached", "Issue validated by 12 residents in Ward 4. Urgency score updated to 88.")
+            )
         ),
-        Issue(
+        EnhancedIssue(
             id = "2",
-            userId = "user2",
-            title = "Large Pothole",
-            description = "A massive pothole has formed in the middle of the road, causing cars to swerve dangerously.",
-            category = "Road",
-            latitude = 12.9800,
-            longitude = 77.6000,
-            imageUrl = "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&q=80&w=1000",
-            status = "In Progress",
-            upvotes = 45,
-            timestamp = System.currentTimeMillis() - 172800000
-        ),
-        Issue(
-            id = "3",
-            userId = "user3",
-            title = "Overflowing Drain",
-            description = "The drainage system is blocked and waste water is spilling onto the sidewalk.",
-            category = "Drainage",
-            latitude = 12.9600,
-            longitude = 77.5800,
+            title = "Minor Pipe Leak - 5th Ave",
+            description = "Slow leak observed near the main fire hydrant. Water pooling but not obstructing traffic.",
+            category = "WATER",
+            latitude = 19.0850,
+            longitude = 72.8850,
             imageUrl = "https://images.unsplash.com/photo-1584467541268-b040f83be3fd?auto=format&fit=crop&q=80&w=1000",
-            status = "Resolved",
-            upvotes = 8,
-            timestamp = System.currentTimeMillis() - 259200000
+            status = "REPORTED",
+            urgency = 42,
+            phase = 1,
+            ward = "Ward 4",
+            timeAgo = "6h ago",
+            upvotes = 45
+        ),
+        EnhancedIssue(
+            id = "3",
+            title = "Deep Pothole - West Bridge",
+            description = "Large pothole causing vehicle diversions. Multiple reports submitted by commuters this...",
+            category = "ROAD",
+            latitude = 19.0600,
+            longitude = 72.8600,
+            imageUrl = "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&q=80&w=1000",
+            status = "VALIDATED",
+            urgency = 75,
+            phase = 2,
+            ward = "Ward 4",
+            timeAgo = "12h ago",
+            upvotes = 89
         )
     )
 
-    data class DepartmentStats(
-        val department: String,
-        val issuesResolved: Int,
-        val avgResolutionTimeDays: Int,
-        val overdueCount: Int
-    )
-
-    val monthlyStats = listOf(
-        DepartmentStats("Public Works (Roads)", 142, 5, 12),
-        DepartmentStats("Water & Sewage", 89, 3, 4),
-        DepartmentStats("Electricity/Lighting", 210, 2, 0),
-        DepartmentStats("Waste Management", 350, 1, 2)
+    val departmentStats = listOf(
+        DepartmentStat("Public Works", 142, 5, 12),
+        DepartmentStat("Water & Sewage", 89, 3, 4),
+        DepartmentStat("Sanitation", 210, 2, 0)
     )
 }

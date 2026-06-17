@@ -2,11 +2,11 @@ package com.civictracker.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val OrangePrimary = Color(0xFFFF9800)
-val OrangeSecondary = Color(0xFFF57C00)
-val OrangeTertiary = Color(0xFFFFB74D)
-
-val DarkBackground = Color(0xFF121212)
-val DarkSurface = Color(0xFF1E1E1E)
-val DarkOnSurface = Color(0xFFE0E0E0)
-val DarkError = Color(0xFFCF6679)
+val DarkBackground = Color(0xFF0B1015)
+val SurfaceDark = Color(0xFF151B22)
+val AccentGreen = Color(0xFF4ADE80)
+val TextPrimary = Color(0xFFFFFFFF)
+val TextSecondary = Color(0xFF8B949E)
+val UrgencyRed = Color(0xFFF85149)
+val PhaseGreen = Color(0xFF238636)
+val DividerGray = Color(0xFF30363D)
