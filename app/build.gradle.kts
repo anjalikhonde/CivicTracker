@@ -89,4 +89,10 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // Supabase
+implementation(libs.supabase.postgrest)
+implementation(libs.supabase.auth)
+implementation(libs.supabase.storage)
+implementation(libs.ktor.client.android)
 }

@@ -1,5 +1,6 @@
 package com.civictracker.app.di
 
+import com.civictracker.app.data.repository.SupabaseRepository
 import android.content.Context
 import androidx.room.Room
 import com.civictracker.app.data.local.AppDatabase
@@ -41,5 +42,10 @@ object AppModule {
     @Provides
     fun provideIssueDao(database: AppDatabase): IssueDao {
         return database.issueDao()
+    }
+    @Provides
+    @Singleton
+    fun provideSupabaseRepository(): SupabaseRepository {
+    return SupabaseRepository()
     }
 }
