@@ -30,8 +30,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -45,7 +49,6 @@ import com.civictracker.app.ui.viewmodel.ReportUiState
 import com.civictracker.app.util.LocationHelper
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, kotlinx.coroutines.FlowPreview::class)
@@ -247,8 +250,21 @@ fun ReportIssueScreen(
             Spacer(Modifier.height(8.dp))
             
             // 1. Photo Section
+            val dashStroke = Stroke(width = 2f, pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f))
             Box(
-                modifier = Modifier.fillMaxWidth().height(180.dp).clip(RoundedCornerShape(12.dp)).background(SurfaceDark).clickable { showImageSourceDialog = true }.border(1.dp, DividerGray, RoundedCornerShape(12.dp)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(SurfaceDark)
+                    .clickable { showImageSourceDialog = true }
+                    .drawBehind {
+                        drawRoundRect(
+                            color = DividerGray,
+                            style = dashStroke,
+                            cornerRadius = CornerRadius(12.dp.toPx())
+                        )
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 if (capturedBitmap != null) {
@@ -261,7 +277,7 @@ fun ReportIssueScreen(
                 }
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(24.dp))
 
             // 2. Main Details
             OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("REPORT TITLE") }, modifier = Modifier.fillMaxWidth(), colors = fieldColors(), shape = RoundedCornerShape(8.dp))
@@ -296,14 +312,13 @@ fun ReportIssueScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !isAnalyzing,
-                colors = ButtonDefaults.buttonColors(containerColor = SurfaceDark),
-                border = BorderStroke(1.dp, AccentGreen.copy(alpha = 0.5f))
+                colors = ButtonDefaults.buttonColors(containerColor = ActionGreen, contentColor = Color.Black)
             ) {
-                if (isAnalyzing) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = AccentGreen, strokeWidth = 2.dp)
+                if (isAnalyzing) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.Black, strokeWidth = 2.dp)
                 else Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.AutoAwesome, null, tint = AccentGreen, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.AutoAwesome, null, tint = Color.Black, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text("RUN AI SMART CHECK", color = TextPrimary)
+                    Text("RUN AI SMART CHECK", fontWeight = FontWeight.Bold)
                 }
             }
 
@@ -407,18 +422,20 @@ fun ReportIssueScreen(
                             }
                         }
                     }
-                    Button(
-                        onClick = { 
-                            val hasPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                            if (hasPermission) fetchLocation()
-                            else locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                        },
-                        modifier = Modifier.height(36.dp),
-                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = AccentGreen.copy(alpha = 0.1f), contentColor = AccentGreen)
-                    ) {
-                        if (isFetchingLocation) CircularProgressIndicator(modifier = Modifier.size(16.dp), color = AccentGreen, strokeWidth = 2.dp)
-                        else Text(if (currentLocation == null) "FETCH" else "RETRY", style = MaterialTheme.typography.labelSmall)
+                    if (currentLocation == null || locationError != null) {
+                        Button(
+                            onClick = {
+                                val hasPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                                if (hasPermission) fetchLocation()
+                                else locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                            },
+                            modifier = Modifier.height(36.dp),
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = AccentGreen.copy(alpha = 0.1f), contentColor = AccentGreen)
+                        ) {
+                            if (isFetchingLocation) CircularProgressIndicator(modifier = Modifier.size(16.dp), color = AccentGreen, strokeWidth = 2.dp)
+                            else Text(if (locationError != null) "RETRY" else "FETCH", style = MaterialTheme.typography.labelSmall)
+                        }
                     }
                 }
             }
@@ -507,8 +524,8 @@ fun AssistantOption(text: String, onClick: () -> Unit) {
 
 @Composable
 fun fieldColors() = OutlinedTextFieldDefaults.colors(
-    focusedBorderColor = AccentGreen, unfocusedBorderColor = DividerGray,
-    focusedLabelColor = AccentGreen, unfocusedLabelColor = TextSecondary,
+    focusedBorderColor = FocusedGreen, unfocusedBorderColor = DividerGray,
+    focusedLabelColor = FocusedGreen, unfocusedLabelColor = TextSecondary,
     focusedTextColor = TextPrimary, unfocusedTextColor = TextPrimary,
     focusedContainerColor = SurfaceDark, unfocusedContainerColor = SurfaceDark
 )

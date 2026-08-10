@@ -124,7 +124,13 @@ class ReportIssueViewModel @Inject constructor(
                 var imageUrl: String? = null
                 if (bitmap != null) {
                     val stream = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+                    // Fix: Convert HARDWARE bitmap to software-backed before compression
+                    val softwareBitmap = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && bitmap.config == Bitmap.Config.HARDWARE) {
+                        bitmap.copy(Bitmap.Config.ARGB_8888, false)
+                    } else {
+                        bitmap
+                    }
+                    softwareBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
                     imageUrl = supabaseRepository.uploadImage(stream.toByteArray())
                 }
 

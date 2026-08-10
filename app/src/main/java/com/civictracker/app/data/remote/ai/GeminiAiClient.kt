@@ -6,7 +6,6 @@ import android.util.Log
 import com.civictracker.app.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -30,6 +29,7 @@ object GeminiAiClient {
     private val validCategories = listOf("Road", "Water", "Waste", "Lighting", "Drainage", "Electricity", "General")
 
     suspend fun analyzeIssue(title: String, description: String, bitmap: Bitmap?): ClaudeAnalysisResult? = withContext(Dispatchers.IO) {
+        Log.d("GeminiAiClient", "DEBUG: analyzeIssue STARTING for title: $title")
         val apiKey = BuildConfig.GEMINI_API_KEY
         if (apiKey.isBlank()) {
             Log.e("GeminiAiClient", "API Key is missing!")
@@ -69,18 +69,26 @@ object GeminiAiClient {
             .post(requestBody.toRequestBody(mediaType))
             .build()
 
+        Log.d("GeminiAiClient", "DEBUG: Gemini Executing OkHttp Call...")
         try {
             client.newCall(request).execute().use { response ->
                 val responseBody = response.body?.string()
+                Log.d("GeminiAiClient", "DEBUG: Gemini HTTP ${response.code}")
+                Log.d("GeminiAiClient", "DEBUG: Gemini RAW RESPONSE: $responseBody")
+                
                 if (!response.isSuccessful) {
                     Log.e("GeminiAiClient", "API call failed (${response.code}): $responseBody")
                     return@withContext null
                 }
                 
                 val resultText = extractTextFromGeminiResponse(responseBody)
+                Log.d("GeminiAiClient", "DEBUG: Gemini EXTRACTED JSON: $resultText")
+                
                 resultText?.let { 
                     try {
-                        json.decodeFromString<ClaudeAnalysisResult>(it)
+                        val result = json.decodeFromString<ClaudeAnalysisResult>(it)
+                        Log.d("GeminiAiClient", "DEBUG: Gemini SUCCESS - Category: ${result.category}")
+                        result
                     } catch (e: Exception) {
                         Log.e("GeminiAiClient", "JSON Decode failed for: $it", e)
                         null
@@ -138,7 +146,13 @@ object GeminiAiClient {
                         }
                         bitmap?.let {
                             val outputStream = ByteArrayOutputStream()
-                            it.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+                            // Fix: Convert HARDWARE bitmap to software-backed before compression
+                            val softwareBitmap = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && it.config == Bitmap.Config.HARDWARE) {
+                                it.copy(Bitmap.Config.ARGB_8888, false)
+                            } else {
+                                it
+                            }
+                            softwareBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
                             val base64Image = Base64.encodeToString(outputStream.toByteArray(), Base64.NO_WRAP)
                             addJsonObject {
                                 putJsonObject("inline_data") {

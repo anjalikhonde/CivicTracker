@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "829099909135",
+    "project_id": "civictracker-8747a",
+    "storage_bucket": "civictracker-8747a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829099909135:android:c9e365d3bc8f5c2cfe037a",
+        "android_client_info": {
+          "package_name": "com.civictracker.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8lX_h9O9iSqX4xU_7NIgRGkgME1XSKD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

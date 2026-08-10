@@ -86,13 +86,22 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                         leadingIcon = { Icon(Icons.Default.Phone, null, tint = AccentGreen, modifier = Modifier.size(20.dp)) },
+                        isError = uiState is LoginUiState.Error,
+                        supportingText = {
+                            if (uiState is LoginUiState.Error) {
+                                Text((uiState as LoginUiState.Error).message)
+                            }
+                        },
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = AccentGreen,
+                            focusedBorderColor = FocusedGreen,
                             unfocusedBorderColor = DividerGray,
-                            focusedLabelColor = AccentGreen,
+                            focusedLabelColor = FocusedGreen,
                             unfocusedLabelColor = TextSecondary,
                             focusedTextColor = TextPrimary,
-                            unfocusedTextColor = TextPrimary
+                            unfocusedTextColor = TextPrimary,
+                            errorBorderColor = UrgencyRed,
+                            errorLabelColor = UrgencyRed,
+                            errorSupportingTextColor = UrgencyRed
                         ),
                         shape = RoundedCornerShape(8.dp)
                     )
@@ -106,7 +115,7 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth().height(56.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = AccentGreen,
+                            containerColor = ActionGreen,
                             disabledContainerColor = DividerGray
                         ),
                         enabled = phoneNumber.length >= 10 && uiState !is LoginUiState.Loading
@@ -137,13 +146,22 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         leadingIcon = { Icon(Icons.Default.Sms, null, tint = AccentGreen, modifier = Modifier.size(20.dp)) },
+                        isError = uiState is LoginUiState.Error,
+                        supportingText = {
+                            if (uiState is LoginUiState.Error) {
+                                Text((uiState as LoginUiState.Error).message)
+                            }
+                        },
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = AccentGreen,
+                            focusedBorderColor = FocusedGreen,
                             unfocusedBorderColor = DividerGray,
-                            focusedLabelColor = AccentGreen,
+                            focusedLabelColor = FocusedGreen,
                             unfocusedLabelColor = TextSecondary,
                             focusedTextColor = TextPrimary,
-                            unfocusedTextColor = TextPrimary
+                            unfocusedTextColor = TextPrimary,
+                            errorBorderColor = UrgencyRed,
+                            errorLabelColor = UrgencyRed,
+                            errorSupportingTextColor = UrgencyRed
                         ),
                         shape = RoundedCornerShape(8.dp)
                     )
@@ -153,7 +171,7 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth().height(56.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = AccentGreen,
+                            containerColor = ActionGreen,
                             disabledContainerColor = DividerGray
                         ),
                         enabled = otpCode.length == 6 && uiState !is LoginUiState.Loading
@@ -168,26 +186,9 @@ fun LoginScreen(
                         onClick = { viewModel.resetState() },
                         modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 8.dp)
                     ) {
-                        Text("CHANGE PHONE NUMBER", style = MaterialTheme.typography.labelSmall, color = AccentGreen)
+                        Text("CHANGE PHONE NUMBER", style = MaterialTheme.typography.labelMedium, color = StatusAmber)
                     }
                 }
-            }
-        }
-
-        if (uiState is LoginUiState.Error) {
-            Spacer(Modifier.height(16.dp))
-            Surface(
-                color = UrgencyRed.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(4.dp),
-                modifier = Modifier.border(1.dp, UrgencyRed.copy(alpha = 0.5f), RoundedCornerShape(4.dp))
-            ) {
-                Text(
-                    (uiState as LoginUiState.Error).message.uppercase(),
-                    color = UrgencyRed,
-                    style = MaterialTheme.typography.labelSmall,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
             }
         }
     }

@@ -1,0 +1,2 @@
+chatgpt-connectors(canva,spotify)
+Ai studio in chatgpt(google)

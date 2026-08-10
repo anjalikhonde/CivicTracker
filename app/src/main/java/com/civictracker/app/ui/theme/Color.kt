@@ -9,6 +9,8 @@ val DividerGray = Color(0xFF30363D)
 
 // Brand Accents
 val AccentGreen = Color(0xFF4ADE80)
+val FocusedGreen = Color(0xFF63FF9B)
+val ActionGreen = Color(0xFF00C853)
 val PhaseGreen = Color(0xFF238636)
 
 // Status Colors (Civic Context)

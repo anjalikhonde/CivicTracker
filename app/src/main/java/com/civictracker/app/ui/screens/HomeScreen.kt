@@ -44,6 +44,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -94,7 +95,13 @@ fun HomeScreen(
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
             when (selectedTab) {
-                0 -> DashboardTab(issues = issues, isLoading = isLoading, onIssueClick = onIssueClick, onRefresh = { viewModel.refreshIssues() })
+                0 -> DashboardTab(
+                    issues = issues, 
+                    isLoading = isLoading, 
+                    onIssueClick = onIssueClick, 
+                    onRefresh = { viewModel.refreshIssues() },
+                    onReportNavigate = { selectedTab = 1 }
+                )
                 1 -> ReportIssueScreen(onBack = { selectedTab = 0 }, onSuccess = { selectedTab = 0; viewModel.refreshIssues() })
                 2 -> MapTab(issues = issues, onIssueClick = onIssueClick, routingIssueId = routingIssueId)
                 3 -> ProfileTab(onNavigateToOfficerDashboard, onNavigateToPublicScorecard, onLogout)
@@ -148,7 +155,13 @@ fun CivicBottomNav(selectedTab: Int, onTabSelected: (Int) -> Unit) {
 // ─── DASHBOARD TAB ──────────────────────────────────────────────────────────
 
 @Composable
-fun DashboardTab(issues: List<Issue>, isLoading: Boolean, onIssueClick: (String) -> Unit, onRefresh: () -> Unit) {
+fun DashboardTab(
+    issues: List<Issue>, 
+    isLoading: Boolean, 
+    onIssueClick: (String) -> Unit, 
+    onRefresh: () -> Unit,
+    onReportNavigate: () -> Unit
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
             item {
@@ -164,8 +177,22 @@ fun DashboardTab(issues: List<Issue>, isLoading: Boolean, onIssueClick: (String)
             }
             item {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    ImpactCard(value = "${issues.count { it.status == "Resolved" }}", label = "Issues Resolved", icon = Icons.Default.CheckCircle, showPulse = false, modifier = Modifier.weight(1f))
-                    ImpactCard(value = "${issues.count { it.status != "Resolved" }}", label = "Total Active Reports", icon = Icons.Default.Radar, showPulse = true, modifier = Modifier.weight(1f))
+                    ImpactCard(
+                        value = "${issues.count { it.status == "Resolved" }}", 
+                        label = "Issues Resolved", 
+                        icon = Icons.Default.CheckCircle, 
+                        showPulse = false, 
+                        isLoading = isLoading,
+                        modifier = Modifier.weight(1f)
+                    )
+                    ImpactCard(
+                        value = "${issues.count { it.status != "Resolved" }}", 
+                        label = "Total Active Reports", 
+                        icon = Icons.Default.Radar, 
+                        showPulse = true, 
+                        isLoading = isLoading,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
             item {
@@ -181,7 +208,26 @@ fun DashboardTab(issues: List<Issue>, isLoading: Boolean, onIssueClick: (String)
                 }
             }
             if (issues.isEmpty() && !isLoading) {
-                item { Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) { Text("No active reports detected in your sector.", color = TextSecondary) } }
+                item { 
+                    Column(
+                        modifier = Modifier.fillMaxWidth().padding(32.dp), 
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) { 
+                        Text(
+                            "No active reports in your area yet — be the first to report an issue", 
+                            color = TextSecondary,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium
+                        ) 
+                        Text(
+                            "REPORT ISSUE →",
+                            color = StatusAmber,
+                            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                            modifier = Modifier.clickable { onReportNavigate() }
+                        )
+                    } 
+                }
             } else {
                 items(issues, key = { it.id }) { issue -> NearbyReportCard(issue = issue, onClick = { onIssueClick(issue.id) }) }
             }
@@ -194,7 +240,7 @@ fun DashboardTab(issues: List<Issue>, isLoading: Boolean, onIssueClick: (String)
 // ─── IMPACT CARD ────────────────────────────────────────────────────────────
 
 @Composable
-fun ImpactCard(value: String, label: String, icon: ImageVector, showPulse: Boolean, modifier: Modifier = Modifier) {
+fun ImpactCard(value: String, label: String, icon: ImageVector, showPulse: Boolean, isLoading: Boolean, modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 0.4f, 
@@ -221,13 +267,18 @@ fun ImpactCard(value: String, label: String, icon: ImageVector, showPulse: Boole
         Column(modifier = Modifier.padding(20.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Surface(color = AccentGreen.copy(alpha = 0.12f), shape = RoundedCornerShape(10.dp), modifier = Modifier.size(36.dp)) {
-                    Box(contentAlignment = Alignment.Center) { Icon(icon, null, modifier = Modifier.size(18.dp), tint = AccentGreen) }
+                    Box(contentAlignment = Alignment.Center) { Icon(icon, null, modifier = Modifier.size(18.dp), tint = FocusedGreen) }
                 }
                 // Optimized pulsing dot: Using graphicsLayer ensures animation runs on GPU, skipping CPU recomposition
                 if (showPulse) Box(modifier = Modifier.size(6.dp).clip(CircleShape).graphicsLayer { this.alpha = alpha }.background(AccentGreen))
             }
             Spacer(Modifier.height(18.dp))
-            Text(value, style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Black, letterSpacing = (-1.5).sp, fontSize = 32.sp), color = TextPrimary)
+            if (isLoading) {
+                CircularProgressIndicator(modifier = Modifier.size(20.dp), color = AccentGreen, strokeWidth = 2.dp)
+                Spacer(Modifier.height(12.dp))
+            } else {
+                Text(value, style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Black, letterSpacing = (-1.5).sp, fontSize = 32.sp), color = TextPrimary)
+            }
             Text(label.uppercase(), style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Black, letterSpacing = 1.2.sp, fontSize = 9.sp), color = TextSecondary, lineHeight = 14.sp)
         }
     }
