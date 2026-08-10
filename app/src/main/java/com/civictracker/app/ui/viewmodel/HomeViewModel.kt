@@ -3,21 +3,23 @@ package com.civictracker.app.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.civictracker.app.data.model.Issue
-import com.civictracker.app.data.repository.IssueRepository
+import com.civictracker.app.data.repository.SupabaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: IssueRepository
+    private val supabaseRepository: SupabaseRepository
 ) : ViewModel() {
 
-    val issues: StateFlow<List<Issue>> = repository.issues
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    private val _issues = MutableStateFlow<List<Issue>>(emptyList())
+    val issues: StateFlow<List<Issue>> = _issues
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
     init {
         refreshIssues()
@@ -25,7 +27,10 @@ class HomeViewModel @Inject constructor(
 
     fun refreshIssues() {
         viewModelScope.launch {
-            repository.refreshIssues()
+            _isLoading.value = true
+            val fetchedIssues = supabaseRepository.getAllIssues()
+            _issues.value = fetchedIssues
+            _isLoading.value = false
         }
     }
 }

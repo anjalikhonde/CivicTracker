@@ -50,9 +50,9 @@ object MockData {
             timeAgo = "2h ago",
             upvotes = 124,
             sla = "04:22:16",
-            department = "Electricity Dept",
+            department = "Sanitation Dept",
             timeline = listOf(
-                AuditEntry("MAR 11, 09:12 AM", "Government Routes to Electricity", "Internal dispatch protocol initiated. High priority flag attached."),
+                AuditEntry("MAR 11, 09:12 AM", "Government Routes to Sanitation", "Internal dispatch protocol initiated. High priority flag attached."),
                 AuditEntry("MAR 11, 04:30 PM", "Community Consensus Reached", "Issue validated by 12 residents in Ward 4. Urgency score updated to 88.")
             )
         ),

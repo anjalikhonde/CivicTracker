@@ -6,6 +6,8 @@ import androidx.room.Room
 import com.civictracker.app.data.local.AppDatabase
 import com.civictracker.app.data.local.IssueDao
 import com.civictracker.app.data.remote.CivicApi
+import com.civictracker.app.data.remote.MLApiService
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,12 +23,26 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
     fun provideCivicApi(): CivicApi {
         return Retrofit.Builder()
             .baseUrl(CivicApi.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(CivicApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMLApiService(): MLApiService {
+        return Retrofit.Builder()
+            .baseUrl(MLApiService.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(MLApiService::class.java)
     }
 
     @Provides
@@ -43,9 +59,10 @@ object AppModule {
     fun provideIssueDao(database: AppDatabase): IssueDao {
         return database.issueDao()
     }
+
     @Provides
     @Singleton
     fun provideSupabaseRepository(): SupabaseRepository {
-    return SupabaseRepository()
+        return SupabaseRepository()
     }
 }

@@ -21,4 +21,7 @@ interface IssueApi {
 
     @GET("issues/user/{userId}")
     suspend fun getUserIssues(@Path("userId") userId: String): List<Issue>
+
+    @DELETE("issues/{issueId}")
+    suspend fun deleteIssue(@Path("issueId") issueId: String)
 }

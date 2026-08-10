@@ -147,7 +147,7 @@ fun ReportScreen(
 
             Button(
                 onClick = { 
-                    viewModel.submitIssue(title, description, category, null) 
+                    viewModel.submitIssue(title, description, category, "Medium", bitmap)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = title.isNotBlank() && location != null && uiState !is ReportUiState.Loading

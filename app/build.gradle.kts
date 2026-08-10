@@ -1,9 +1,26 @@
+import java.util.Properties
+import java.io.FileInputStream
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(FileInputStream(localPropertiesFile))
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.services)
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("androidx.browser:browser:1.8.0")
+    }
 }
 
 android {
@@ -18,6 +35,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GEMINI_API_KEY", "\"${localProperties.getProperty("GEMINI_API_KEY") ?: ""}\"")
+        buildConfigField("String", "ANTHROPIC_API_KEY", "\"${localProperties.getProperty("ANTHROPIC_API_KEY") ?: ""}\"")
+        buildConfigField("String", "SUPABASE_URL", "\"${localProperties.getProperty("SUPABASE_URL") ?: ""}\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY", "\"${localProperties.getProperty("SUPABASE_ANON_KEY") ?: ""}\"")
     }
 
     buildTypes {
@@ -38,6 +60,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -53,7 +76,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
 
     // Navigation
-    implementation(libs.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.navigation.compose)
 
     // Hilt
@@ -75,12 +98,28 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
 
-    // Google Maps & Location
-    implementation(libs.maps.compose)
+    // Location & Maps
     implementation(libs.play.services.location)
+    implementation(libs.osmdroid.android)
+    implementation(libs.osmbonuspack)
+    implementation(libs.androidx.preference.ktx)
 
     // Coil
     implementation(libs.coil.compose)
+
+    // Supabase
+    implementation(libs.supabase.postgrest)
+    implementation(libs.supabase.auth)
+    implementation(libs.supabase.storage)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.core)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+
+    // AI
+    implementation(libs.google.generativeai)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
