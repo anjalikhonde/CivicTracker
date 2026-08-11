@@ -83,6 +83,7 @@ fun HomeScreen(
     var selectedTab by remember { mutableIntStateOf(0) }
     val issues by viewModel.issues.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val userRole by viewModel.userRole.collectAsState()
 
     LaunchedEffect(routingIssueId) {
         if (routingIssueId != null) selectedTab = 2
@@ -104,7 +105,7 @@ fun HomeScreen(
                 )
                 1 -> ReportIssueScreen(onBack = { selectedTab = 0 }, onSuccess = { selectedTab = 0; viewModel.refreshIssues() })
                 2 -> MapTab(issues = issues, onIssueClick = onIssueClick, routingIssueId = routingIssueId)
-                3 -> ProfileTab(onNavigateToOfficerDashboard, onNavigateToPublicScorecard, onLogout)
+                3 -> ProfileTab(userRole, onNavigateToOfficerDashboard, onNavigateToPublicScorecard, onLogout)
             }
         }
     }
@@ -466,19 +467,28 @@ fun MapIssueCard(issue: Issue, onIssueClick: (String) -> Unit) {
 }
 
 @Composable
-fun ProfileTab(onNavigateToOfficerDashboard: () -> Unit, onNavigateToPublicScorecard: () -> Unit, onLogout: () -> Unit) {
+fun ProfileTab(
+    userRole: String,
+    onNavigateToOfficerDashboard: () -> Unit,
+    onNavigateToPublicScorecard: () -> Unit,
+    onLogout: () -> Unit
+) {
     LazyColumn(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         item { Spacer(Modifier.height(16.dp)) }
         item {
             Box(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(Brush.verticalGradient(listOf(SurfaceDark, Color(0xFF0F1419)))).border(1.dp, DividerGray.copy(alpha = 0.5f), RoundedCornerShape(24.dp))) {
                 Row(modifier = Modifier.fillMaxWidth().padding(24.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(contentAlignment = Alignment.Center) { Surface(modifier = Modifier.size(90.dp), color = AccentGreen.copy(alpha = 0.1f), shape = CircleShape) {}; AsyncImage(model = "https://ui-avatars.com/api/?name=User&background=4ADE80&color=fff&size=100", contentDescription = "Profile", modifier = Modifier.size(80.dp).clip(CircleShape).border(2.dp, AccentGreen, CircleShape)) }
-                    Spacer(Modifier.width(20.dp)); Column { Text("Citizen User", style = MaterialTheme.typography.titleLarge.copy(fontSize = 22.sp), fontWeight = FontWeight.Black); Surface(color = AccentGreen.copy(alpha = 0.12f), shape = RoundedCornerShape(6.dp), modifier = Modifier.padding(top = 6.dp).border(1.dp, AccentGreen.copy(alpha = 0.3f), RoundedCornerShape(6.dp))) { Text(" ACTIVE MEMBER ", style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Black, fontSize = 10.sp, letterSpacing = 1.sp), color = AccentGreen, modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)) } }
+                    Spacer(Modifier.width(20.dp)); Column { Text("Citizen User", style = MaterialTheme.typography.titleLarge.copy(fontSize = 22.sp), fontWeight = FontWeight.Black); Surface(color = AccentGreen.copy(alpha = 0.12f), shape = RoundedCornerShape(6.dp), modifier = Modifier.padding(top = 6.dp).border(1.dp, AccentGreen.copy(alpha = 0.3f), RoundedCornerShape(6.dp))) { Text(if (userRole == "loading") " VERIFYING... " else " ${userRole.uppercase()} ", style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Black, fontSize = 10.sp, letterSpacing = 1.sp), color = AccentGreen, modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)) } }
                 }
             }
         }
         item { Text("QUICK ACTIONS", style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Black, letterSpacing = 1.5.sp), color = TextSecondary, modifier = Modifier.padding(top = 12.dp, bottom = 4.dp)) }
-        item { ProfileMenuCard(icon = Icons.Default.Dashboard, title = "Officer Dashboard", subtitle = "View government action panel", onClick = onNavigateToOfficerDashboard) }
+
+        if (userRole == "officer") {
+            item { ProfileMenuCard(icon = Icons.Default.Dashboard, title = "Officer Dashboard", subtitle = "View government action panel", onClick = onNavigateToOfficerDashboard) }
+        }
+
         item { ProfileMenuCard(icon = Icons.Default.BarChart, title = "Public Scorecard", subtitle = "Ward performance & statistics", onClick = onNavigateToPublicScorecard) }
         item { ProfileMenuCard(icon = Icons.AutoMirrored.Filled.Logout, title = "Sign Out", subtitle = "Log out of your account", onClick = onLogout, isDestructive = true) }
         item { Spacer(Modifier.height(40.dp)) }

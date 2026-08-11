@@ -2,6 +2,7 @@ package com.civictracker.app.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.civictracker.app.data.auth.SessionManager
 import com.civictracker.app.data.model.Issue
 import com.civictracker.app.data.repository.SupabaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OfficerDashboardViewModel @Inject constructor(
-    private val supabaseRepository: SupabaseRepository
+    private val supabaseRepository: SupabaseRepository,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
 
     private val _issues = MutableStateFlow<List<Issue>>(emptyList())
@@ -22,11 +24,22 @@ class OfficerDashboardViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    val userRole = sessionManager.userRole
+
     init {
-        fetchIssues()
+        // Automatically fetch issues when role is confirmed as officer
+        viewModelScope.launch {
+            userRole.collect { role ->
+                if (role == "officer") {
+                    fetchIssues()
+                }
+            }
+        }
     }
 
     fun fetchIssues() {
+        if (userRole.value != "officer") return
+
         viewModelScope.launch {
             _isLoading.value = true
             val fetchedIssues = supabaseRepository.getAllIssues()
@@ -37,6 +50,8 @@ class OfficerDashboardViewModel @Inject constructor(
     }
 
     fun updateStatus(issueId: String, newStatus: String) {
+        if (userRole.value != "officer") return
+
         viewModelScope.launch {
             supabaseRepository.updateIssueStatus(issueId, newStatus)
             // Update local state immediately for snappy UI

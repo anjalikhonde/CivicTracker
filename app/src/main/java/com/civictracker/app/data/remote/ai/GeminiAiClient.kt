@@ -36,9 +36,13 @@ object GeminiAiClient {
             return@withContext null
         }
 
+        Log.d("GeminiAiClient", "DEBUG: analyzeIssue data - title: $title, desc length: ${description.length}, has bitmap: ${bitmap != null}")
+
+        val effectiveTitle = if (title.isBlank() || title == "Issue Analysis") "Not provided" else title
+
         val prompt = """
             Analyze the following civic complaint evidence (description and photo) and provide a detailed analysis in strict JSON format.
-            Title: $title
+            Title: $effectiveTitle
             Description: $description
             
             Valid Categories: Road, Water, Electricity, Waste, Lighting, Drainage, General.
@@ -55,7 +59,7 @@ object GeminiAiClient {
               "priority": "Predicted Priority",
               "sentiment": "Detected Sentiment",
               "professionalDescription": "A professional rewrite of the complaint description",
-              "identifiedObject": "Briefly describe the main object/issue identified in the image",
+              "identifiedObject": "A short (3-5 word) descriptive title for this issue if the provided Title was missing or generic, otherwise describe the main object",
               "imageInsight": "A short helpful sentence about the issue visible in the image"
             }
             Only return the JSON.

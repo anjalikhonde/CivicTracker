@@ -1,8 +1,11 @@
 package com.civictracker.app.data.repository
 
+import android.util.Log
 import com.civictracker.app.data.model.Issue
+import com.civictracker.app.data.model.Profile
 import com.civictracker.app.data.supabase.SupabaseClient.client
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.query.Columns
 import io.github.jan.supabase.storage.storage
 import java.util.UUID
 
@@ -102,6 +105,58 @@ class SupabaseRepository {
         } catch (e: Exception) {
             e.printStackTrace()
             throw e
+        }
+    }
+
+    suspend fun getProfile(userId: String): Profile? {
+        return try {
+            client.from("profiles").select {
+                filter {
+                    eq("user_id", userId)
+                }
+            }.decodeSingleOrNull<Profile>()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    suspend fun createProfile(profile: Profile) {
+        try {
+            client.from("profiles").insert(profile)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun updateProfileRole(userId: String, role: String) {
+        try {
+            client.from("profiles").update(
+                {
+                    set("role", role)
+                }
+            ) {
+                filter {
+                    eq("user_id", userId)
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("OfficerCheck", "Failed to update profile role", e)
+        }
+    }
+
+    suspend fun isOfficerNumber(phoneNumber: String): Boolean {
+        return try {
+            // Only select the "phone_number" column to avoid type mismatches with other columns like "id"
+            val result = client.from("officer_numbers").select(Columns.list("phone_number")) {
+                filter {
+                    eq("phone_number", phoneNumber)
+                }
+            }.decodeList<Map<String, String>>()
+            result.isNotEmpty()
+        } catch (e: Exception) {
+            Log.e("OfficerCheck", "isOfficerNumber query failed", e)
+            false
         }
     }
 }

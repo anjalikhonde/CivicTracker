@@ -38,97 +38,110 @@ fun OfficerDashboardScreen(
 ) {
     val issues by viewModel.issues.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val userRole by viewModel.userRole.collectAsState()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { 
-                    Text(
-                        "OFFICER COMMAND PANEL", 
-                        style = MaterialTheme.typography.labelLarge.copy(
-                            fontWeight = FontWeight.Black,
-                            letterSpacing = 1.5.sp
-                        )
-                    ) 
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { viewModel.fetchIssues() }) { 
-                        Icon(Icons.Default.Sync, null, tint = AccentGreen) 
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground,
-                    titleContentColor = TextPrimary,
-                    navigationIconContentColor = TextPrimary
+    // Security Gate: Immediate redirect if not an officer
+    LaunchedEffect(userRole) {
+        if (userRole != "officer") {
+            onBack()
+        }
+    }
+
+    if (userRole == "officer") {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { 
+                        Text(
+                            "OFFICER COMMAND PANEL", 
+                            style = MaterialTheme.typography.labelLarge.copy(
+                                fontWeight = FontWeight.Black,
+                                letterSpacing = 1.5.sp
+                            )
+                        ) 
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { viewModel.fetchIssues() }) { 
+                            Icon(Icons.Default.Sync, null, tint = AccentGreen) 
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = DarkBackground,
+                        titleContentColor = TextPrimary,
+                        navigationIconContentColor = TextPrimary
+                    )
                 )
-            )
-        },
-        containerColor = DarkBackground
-    ) { padding ->
-        Box(modifier = Modifier.padding(padding).fillMaxSize()) {
-            if (isLoading && issues.isEmpty()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = AccentGreen)
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    item {
-                        Column(modifier = Modifier.padding(bottom = 8.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    "SYSTEM DISPATCH QUEUE", 
-                                    style = MaterialTheme.typography.labelSmall.copy(
-                                        fontWeight = FontWeight.Black,
-                                        letterSpacing = 2.sp
-                                    ), 
-                                    color = AccentGreen
-                                )
-                                Spacer(Modifier.width(12.dp))
-                                PulseIndicator()
-                            }
-                            Text(
-                                "Incident Priority Queue", 
-                                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Black), 
-                                color = TextPrimary
-                            )
-                            Text(
-                                "Automated urgency scoring applied via community signals and response aging.",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = TextSecondary,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                    }
-                    
-                    items(issues, key = { it.id }) { issue ->
-                        val urgency = viewModel.calculateUrgency(issue)
-                        OfficerIssueCard(
-                            issue = issue, 
-                            urgency = urgency,
-                            onClick = { onIssueClick(issue.id) },
-                            onStatusUpdate = { newStatus -> viewModel.updateStatus(issue.id, newStatus) }
-                        )
-                    }
-                    
-                    if (issues.isEmpty()) {
+            },
+            containerColor = DarkBackground
+        ) { padding ->
+            Box(modifier = Modifier.padding(padding).fillMaxSize()) {
+                if (isLoading && issues.isEmpty()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = AccentGreen)
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(20.dp)
+                    ) {
                         item {
-                            Box(modifier = Modifier.fillMaxWidth().padding(top = 64.dp), contentAlignment = Alignment.Center) {
-                                Text("NO ACTIVE DEPLOYMENTS DETECTED", style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 1.sp), color = TextSecondary)
+                            Column(modifier = Modifier.padding(bottom = 8.dp)) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        "SYSTEM DISPATCH QUEUE", 
+                                        style = MaterialTheme.typography.labelSmall.copy(
+                                            fontWeight = FontWeight.Black,
+                                            letterSpacing = 2.sp
+                                        ), 
+                                        color = AccentGreen
+                                    )
+                                    Spacer(Modifier.width(12.dp))
+                                    PulseIndicator()
+                                }
+                                Text(
+                                    "Incident Priority Queue", 
+                                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Black), 
+                                    color = TextPrimary
+                                )
+                                Text(
+                                    "Automated urgency scoring applied via community signals and response aging.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = TextSecondary,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
                             }
                         }
+                        
+                        items(issues, key = { it.id }) { issue ->
+                            val urgency = viewModel.calculateUrgency(issue)
+                            OfficerIssueCard(
+                                issue = issue, 
+                                urgency = urgency,
+                                onClick = { onIssueClick(issue.id) },
+                                onStatusUpdate = { newStatus -> viewModel.updateStatus(issue.id, newStatus) }
+                            )
+                        }
+                        
+                        if (issues.isEmpty()) {
+                            item {
+                                Box(modifier = Modifier.fillMaxWidth().padding(top = 64.dp), contentAlignment = Alignment.Center) {
+                                    Text("NO ACTIVE DEPLOYMENTS DETECTED", style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 1.sp), color = TextSecondary)
+                                }
+                            }
+                        }
+                        
+                        item { Spacer(Modifier.height(40.dp)) }
                     }
-                    
-                    item { Spacer(Modifier.height(40.dp)) }
                 }
             }
         }
+    } else {
+        // Empty state while redirecting
+        Box(modifier = Modifier.fillMaxSize().background(DarkBackground))
     }
 }
 

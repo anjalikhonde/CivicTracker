@@ -87,12 +87,12 @@ class ReportIssueViewModel @Inject constructor(
         }
     }
 
-    fun analyzeIssue(description: String, bitmap: Bitmap?) {
+    fun analyzeIssue(title: String, description: String, bitmap: Bitmap?) {
         Log.i("SmartCheck", "ViewModel: analyzeIssue started with GeminiAiClient")
         viewModelScope.launch {
             _isAnalyzing.value = true
             try {
-                val result = GeminiAiClient.analyzeIssue("Issue Analysis", description, bitmap)
+                val result = GeminiAiClient.analyzeIssue(title, description, bitmap)
                 Log.i("SmartCheck", "ViewModel: Received result from Gemini: $result")
                 _aiAnalysis.value = result
             } catch (e: Exception) {

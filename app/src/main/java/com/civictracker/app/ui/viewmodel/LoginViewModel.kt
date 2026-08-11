@@ -3,6 +3,7 @@ package com.civictracker.app.ui.viewmodel
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.civictracker.app.data.auth.SessionManager
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
     val uiState: StateFlow<LoginUiState> = _uiState
@@ -69,7 +71,13 @@ class LoginViewModel @Inject constructor(
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = task.result?.user
-                    _uiState.value = LoginUiState.Success(user?.uid ?: "")
+                    val userId = user?.uid ?: ""
+                    viewModelScope.launch {
+                        if (userId.isNotEmpty()) {
+                            sessionManager.fetchAndSetRole(userId)
+                        }
+                        _uiState.value = LoginUiState.Success(userId)
+                    }
                 } else {
                     _uiState.value = LoginUiState.Error(task.exception?.message ?: "Sign in failed")
                 }
