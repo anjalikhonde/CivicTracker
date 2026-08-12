@@ -8,12 +8,28 @@ Built with Kotlin and Jetpack Compose, backed by Supabase and Firebase Auth, wit
 
 ## ✨ Features
 
-- **Report an Issue** — Capture a photo (camera or gallery), add a description, and pin the location of a civic problem in a few taps.
-- **AI Smart Check** — Uploaded reports are automatically analyzed using Google's Gemini model to help validate and categorize issues before submission.
-- **Issue Tracking** — Citizens can follow the status of their reports from submission through resolution.
-- **Officer Dashboard** — A dedicated view for civic officials to review, manage, and update the status of reported issues.
-- **Public Scorecard** — A transparency view showing aggregate stats on how issues in the community are being resolved.
-- **Secure Auth** — User accounts and sessions are handled via Firebase Authentication.
+### 📝 Reporting an Issue
+- Report a civic issue with a title, category, and detailed description
+- Attach a photo two ways — **capture with the camera** or **pick from the gallery**
+- **AI Smart Check** — the report is automatically analyzed using Google's Gemini model to help validate, categorize, and flag priority before submission
+- Location is auto-attached to every report
+- Submit the official report once everything looks right
+- **Delete** a report you've submitted, if needed
+
+### 🗺️ Map
+- View reported issues plotted on a live map, so citizens and officers can see what's happening nearby
+
+### 📊 Public Scoreboard
+- A public, transparent view of community stats — issues resolved vs. pending, so anyone can see how things are progressing
+
+### 🧑‍💼 Officer Dashboard
+- A dedicated space for civic officials to review incoming reports, manage their status, and track resolution
+
+### 📌 Issue Tracking
+- Citizens can browse other reports in their area and see which ones are **resolved** and which are still **pending**
+
+### 🔐 Secure Auth
+- User accounts and sessions handled via Firebase Authentication
 
 ---
 
@@ -32,11 +48,22 @@ Built with Kotlin and Jetpack Compose, backed by Supabase and Firebase Auth, wit
 
 ## 📱 Screenshots
 
-> _Add screenshots of the Login, Home, Report Issue, and Officer Dashboard screens here._
+### For Citizens
+
+> _Screens showing: reporting an issue, submitting a report, adding pictures (gallery or camera), deleting a report, and viewing other reports (resolved/pending)._
 
 |  |  |  |
 |---|---|---|
-| ![Login](docs/screenshots/login.png) | ![Home](docs/screenshots/home.png) | ![Report Issue](docs/screenshots/report.png) |
+| ![Report Issue](docs/screenshots/citizen/report-issue.png) | ![Add Photo](docs/screenshots/citizen/add-photo.png) | ![Submit Report](docs/screenshots/citizen/submit-report.png) |
+| ![My Reports](docs/screenshots/citizen/my-reports.png) | ![Map](docs/screenshots/citizen/map.png) | ![Public Scoreboard](docs/screenshots/citizen/scoreboard.png) |
+
+### For Officers
+
+> _Screens showing the Officer Dashboard — reviewing and managing reported issues._
+
+|  |  |
+|---|---|
+| ![Officer Dashboard](docs/screenshots/officer/dashboard.png) | ![Issue Detail](docs/screenshots/officer/issue-detail.png) |
 
 ---
 
