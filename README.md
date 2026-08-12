@@ -46,24 +46,45 @@ Built with Kotlin and Jetpack Compose, backed by Supabase and Firebase Auth, wit
 
 ---
 
-## 📱 Screenshots
+## 📱 App Flow & Screenshots
 
-### For Citizens
+### 🧑‍🤝‍🧑 Citizen Flow
 
-> _Screens showing: reporting an issue, submitting a report, adding pictures (gallery or camera), deleting a report, and viewing other reports (resolved/pending)._
+1. **Login** — _screenshot coming soon_
+2. **OTP Verification** — _screenshot coming soon_
+3. **Home Page**
+   ![Home Page](docs/screenshots/citizen/03-home.png)
+4. **Report Submission — Photo & Title**
+   ![Add Photo & Title](docs/screenshots/citizen/04-report-photo-title.png)
+5. **Report Submission — Details & Description**
+   ![Report Details](docs/screenshots/citizen/05-report-details.png)
+6. **Public Scoreboard** (after submitting)
+   ![Public Scoreboard](docs/screenshots/citizen/06-scoreboard.png)
+7. **Map View**
+   ![Map View](docs/screenshots/citizen/07-map.png)
+8. **Back to Public Scoreboard**
+   ![Public Scoreboard](docs/screenshots/citizen/08-scoreboard.png)
 
-|  |  |  |
-|---|---|---|
-| ![Report Issue](docs/screenshots/citizen/report-issue.png) | ![Add Photo](docs/screenshots/citizen/add-photo.png) | ![Submit Report](docs/screenshots/citizen/submit-report.png) |
-| ![My Reports](docs/screenshots/citizen/my-reports.png) | ![Map](docs/screenshots/citizen/map.png) | ![Public Scoreboard](docs/screenshots/citizen/scoreboard.png) |
+### 🧑‍💼 Officer Flow
 
-### For Officers
-
-> _Screens showing the Officer Dashboard — reviewing and managing reported issues._
-
-|  |  |
-|---|---|
-| ![Officer Dashboard](docs/screenshots/officer/dashboard.png) | ![Issue Detail](docs/screenshots/officer/issue-detail.png) |
+1. **Login** — _screenshot coming soon_
+2. **OTP Verification** — _screenshot coming soon_
+3. **Home Page**
+   ![Home Page](docs/screenshots/officer/03-home.png)
+4. **Officer Dashboard**
+   ![Officer Dashboard](docs/screenshots/officer/04-dashboard.png)
+5. **Profile Page**
+   ![Profile Page](docs/screenshots/officer/05-profile.png)
+6. **Back to Officer Dashboard**
+   ![Officer Dashboard](docs/screenshots/officer/06-dashboard.png)
+7. **Mark Issue as Resolved**
+   ![Resolved Action](docs/screenshots/officer/07-resolved.png)
+8. **Home Page**
+   ![Home Page](docs/screenshots/officer/08-home.png)
+9. **Public Scoreboard**
+   ![Public Scoreboard](docs/screenshots/officer/09-scoreboard.png)
+10. **Scoreboard Result (100%)**
+    ![Scoreboard Result](docs/screenshots/officer/10-scoreboard-result.png)
 
 ---
 
