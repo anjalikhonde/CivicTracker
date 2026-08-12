@@ -53,38 +53,38 @@ Built with Kotlin and Jetpack Compose, backed by Supabase and Firebase Auth, wit
 1. **Login** — _screenshot coming soon_
 2. **OTP Verification** — _screenshot coming soon_
 3. **Home Page**
-   ![Home Page](docs/screenshots/citizen/03-home.png)
+   ![Home Page](citizen/03-home.png)
 4. **Report Submission — Photo & Title**
-   ![Add Photo & Title](docs/screenshots/citizen/04-report-photo-title.png)
+   ![Add Photo & Title](citizen/04-report-photo-title.png)
 5. **Report Submission — Details & Description**
-   ![Report Details](docs/screenshots/citizen/05-report-details.png)
+   ![Report Details](citizen/05-report-details.png)
 6. **Public Scoreboard** (after submitting)
-   ![Public Scoreboard](docs/screenshots/citizen/06-scoreboard.png)
+   ![Public Scoreboard](citizen/06-scoreboard.png)
 7. **Map View**
-   ![Map View](docs/screenshots/citizen/07-map.png)
+   ![Map View](citizen/07-map.png)
 8. **Back to Public Scoreboard**
-   ![Public Scoreboard](docs/screenshots/citizen/08-scoreboard.png)
+   ![Public Scoreboard](citizen/08-scoreboard.png)
 
 ### 🧑‍💼 Officer Flow
 
 1. **Login** — _screenshot coming soon_
 2. **OTP Verification** — _screenshot coming soon_
 3. **Home Page**
-   ![Home Page](docs/screenshots/officer/03-home.png)
+   ![Home Page](officer/03-home.png)
 4. **Officer Dashboard**
-   ![Officer Dashboard](docs/screenshots/officer/04-dashboard.png)
+   ![Officer Dashboard](officer/04-dashboard.png)
 5. **Profile Page**
-   ![Profile Page](docs/screenshots/officer/05-profile.png)
+   ![Profile Page](officer/05-profile.png)
 6. **Back to Officer Dashboard**
-   ![Officer Dashboard](docs/screenshots/officer/06-dashboard.png)
+   ![Officer Dashboard](officer/06-dashboard.png)
 7. **Mark Issue as Resolved**
-   ![Resolved Action](docs/screenshots/officer/07-resolved.png)
+   ![Resolved Action](officer/07-resolved.png)
 8. **Home Page**
-   ![Home Page](docs/screenshots/officer/08-home.png)
+   ![Home Page](officer/08-home.png)
 9. **Public Scoreboard**
-   ![Public Scoreboard](docs/screenshots/officer/09-scoreboard.png)
+   ![Public Scoreboard](officer/09-scoreboard.png)
 10. **Scoreboard Result (100%)**
-    ![Scoreboard Result](docs/screenshots/officer/10-scoreboard-result.png)
+    ![Scoreboard Result](officer/10-scoreboard-result.png)
 
 ---
 
