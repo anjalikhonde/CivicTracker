@@ -1,8 +1,28 @@
 # 🏙️ CivicTracker
 
+![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=flat&logo=kotlin&logoColor=white)
+![Android](https://img.shields.io/badge/Android-3DDC84?style=flat&logo=android&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=flat&logo=jetpackcompose&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=firebase&logoColor=black)
+![Gemini](https://img.shields.io/badge/Gemini%20API-8E75B2?style=flat&logo=googlegemini&logoColor=white)
+
 **CivicTracker** is a native Android app that makes it simple for citizens to report the everyday civic problems they run into — potholes, broken streetlights, garbage pileups, water leaks, and more — and track how those reports get resolved.
 
 Built with Kotlin and Jetpack Compose, backed by Supabase and Firebase Auth, with an AI-assisted issue check powered by Gemini.
+
+---
+
+## 📑 Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#️-tech-stack)
+- [App Flow & Screenshots](#-app-flow--screenshots)
+- [Getting Started](#-getting-started)
+- [Project Structure](#-project-structure)
+- [Roadmap](#️-roadmap)
+- [Contributors](#-contributors)
+- [License](#-license)
 
 ---
 
@@ -67,10 +87,12 @@ Built with Kotlin and Jetpack Compose, backed by Supabase and Firebase Auth, wit
 
 ### 🧑‍💼 Officer Flow
 
+> *Steps 1–2 reuse the same login/OTP screens as the citizen flow, since authentication is shared across both roles.*
+
 <table>
   <tr>
-    <td align="center"><img src="citizen/01-login.png" width="180"/><br/><b>1. Login</b></td>
-    <td align="center"><img src="citizen/02-otp.png" width="180"/><br/><b>2. OTP Verification</b></td>
+    <td align="center"><img src="citizen/01-login.png" width="180"/><br/><b>1. Login</b><br/><sub>(shared with citizen)</sub></td>
+    <td align="center"><img src="citizen/02-otp.png" width="180"/><br/><b>2. OTP Verification</b><br/><sub>(shared with citizen)</sub></td>
     <td align="center"><img src="officer/03-home.png" width="180"/><br/><b>3. Home Page</b></td>
     <td align="center"><img src="officer/04-dashboard.png" width="180"/><br/><b>4. Officer Dashboard</b></td>
   </tr>
