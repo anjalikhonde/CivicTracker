@@ -50,43 +50,43 @@ Built with Kotlin and Jetpack Compose, backed by Supabase and Firebase Auth, wit
 
 ### 🧑‍🤝‍🧑 Citizen Flow
 
-1. **Login**
-   ![Login](citizen/01-login.png)
-2. **OTP Verification**
-   ![OTP Verification](citizen/02-otp.png)
-3. **Home Page**
-   ![Home Page](citizen/03-home.png)
-4. **Report Submission — Photo & Title**
-   ![Add Photo & Title](citizen/04-report-photo-title.png)
-5. **Report Submission — Details & Description**
-   ![Report Details](citizen/05-report-details.png)
-6. **Public Scoreboard** (after submitting)
-   ![Public Scoreboard](citizen/06-scoreboard.png)
-7. **Map View**
-   ![Map View](citizen/07-map.png)
-8. **Back to Public Scoreboard**
-   ![Public Scoreboard](citizen/08-scoreboard.png)
+<table>
+  <tr>
+    <td align="center"><img src="citizen/01-login.png" width="180"/><br/><b>1. Login</b></td>
+    <td align="center"><img src="citizen/02-otp.png" width="180"/><br/><b>2. OTP Verification</b></td>
+    <td align="center"><img src="citizen/03-home.png" width="180"/><br/><b>3. Home Page</b></td>
+    <td align="center"><img src="citizen/04-report-photo-title.png" width="180"/><br/><b>4. Report — Photo & Title</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="citizen/05-report-details.png" width="180"/><br/><b>5. Report — Details</b></td>
+    <td align="center"><img src="citizen/06-scoreboard.png" width="180"/><br/><b>6. Public Scoreboard</b></td>
+    <td align="center"><img src="citizen/07-map.png" width="180"/><br/><b>7. Map View</b></td>
+    <td align="center"><img src="citizen/08-scoreboard.png" width="180"/><br/><b>8. Scoreboard (revisit)</b></td>
+  </tr>
+</table>
 
 ### 🧑‍💼 Officer Flow
 
-1. **Login** — _screenshot coming soon_
-2. **OTP Verification** — _screenshot coming soon_
-3. **Home Page**
-   ![Home Page](officer/03-home.png)
-4. **Officer Dashboard**
-   ![Officer Dashboard](officer/04-dashboard.png)
-5. **Profile Page**
-   ![Profile Page](officer/05-profile.png)
-6. **Back to Officer Dashboard**
-   ![Officer Dashboard](officer/06-dashboard.png)
-7. **Mark Issue as Resolved**
-   ![Resolved Action](officer/07-resolved.png)
-8. **Home Page**
-   ![Home Page](officer/08-home.png)
-9. **Public Scoreboard**
-   ![Public Scoreboard](officer/09-scoreboard.png)
-10. **Scoreboard Result (100%)**
-    ![Scoreboard Result](officer/10-scoreboard-result.png)
+<table>
+  <tr>
+    <td align="center"><img src="citizen/01-login.png" width="180"/><br/><b>1. Login</b></td>
+    <td align="center"><img src="citizen/02-otp.png" width="180"/><br/><b>2. OTP Verification</b></td>
+    <td align="center"><img src="officer/03-home.png" width="180"/><br/><b>3. Home Page</b></td>
+    <td align="center"><img src="officer/04-dashboard.png" width="180"/><br/><b>4. Officer Dashboard</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="officer/05-profile.png" width="180"/><br/><b>5. Profile Page</b></td>
+    <td align="center"><img src="officer/06-dashboard.png" width="180"/><br/><b>6. Dashboard (revisit)</b></td>
+    <td align="center"><img src="officer/07-resolved.png" width="180"/><br/><b>7. Mark as Resolved</b></td>
+    <td align="center"><img src="officer/08-home.png" width="180"/><br/><b>8. Home Page</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="officer/09-scoreboard.png" width="180"/><br/><b>9. Public Scoreboard</b></td>
+    <td align="center"><img src="officer/10-scoreboard-result.png" width="180"/><br/><b>10. Scoreboard Result</b></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
 
 ---
 
