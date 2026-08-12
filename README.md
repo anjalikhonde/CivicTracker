@@ -50,8 +50,10 @@ Built with Kotlin and Jetpack Compose, backed by Supabase and Firebase Auth, wit
 
 ### 🧑‍🤝‍🧑 Citizen Flow
 
-1. **Login** — _screenshot coming soon_
-2. **OTP Verification** — _screenshot coming soon_
+1. **Login**
+   ![Login](citizen/01-login.png)
+2. **OTP Verification**
+   ![OTP Verification](citizen/02-otp.png)
 3. **Home Page**
    ![Home Page](citizen/03-home.png)
 4. **Report Submission — Photo & Title**
